@@ -19,9 +19,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'o5@+db*la64$dd#fqk2^$zht8$q3&ke+id=4!mg!+83@a+yeu6'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -37,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +73,7 @@ WSGI_APPLICATION = 'spotlight.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
     }
 }
 
@@ -103,7 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'UTC'
 
@@ -118,3 +115,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+
+# Define custom user model to auth
+# https://docs.djangoproject.com/en/2.2/ref/settings/#std:setting-AUTH_USER_MODEL
+
+AUTH_USER_MODEL = 'accounts.User'
+
+
+# HERE STARTS DYNACONF EXTENSION LOAD (Keep at the very bottom of settings.py)
+# Read more at https://dynaconf.readthedocs.io/en/latest/guides/django.html
+
+import dynaconf  # noqa
+
+settings = dynaconf.DjangoDynaconf(__name__,
+    ROOT_PATH=BASE_DIR,
+    SECRETS=BASE_DIR,
+)  # noqa
+
+# HERE ENDS DYNACONF EXTENSION LOAD (No more code below this line)

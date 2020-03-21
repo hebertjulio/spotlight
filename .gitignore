@@ -9,3 +9,4 @@ __mypy__/
 *.py[cod]
 *.sqlite3
 *.db
+.secrets.*

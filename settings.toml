@@ -1,0 +1,7 @@
+[development]
+
+DATABASES__default__NAME = "spotlight"
+DATABASES__default__USER = "spotlight"
+DATABASES__default__PASSWORD = "spotlight"
+DATABASES__default__HOST = "db"
+DATABASES__default__PORT = 5432
