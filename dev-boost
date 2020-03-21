@@ -2,5 +2,5 @@
 
 pip install -r requirements.txt
 
-python manage.py migrate
-python manage.py runserver [::]:8000
+python -u manage.py migrate
+python -u manage.py runserver [::]:8000
