@@ -48,6 +48,7 @@ class News(TimeStampedModel):
     blurb = models.CharField(_('blurb'), max_length=100)
     editorial = models.ForeignKey('Editorial', on_delete=models.CASCADE)
     url = models.URLField(_('url'))
+    section = models.ForeignKey('Section', on_delete=models.CASCADE)
     site = models.ForeignKey('Site', on_delete=models.CASCADE)
 
     class Meta:
