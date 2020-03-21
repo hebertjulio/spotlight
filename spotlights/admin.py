@@ -36,6 +36,9 @@ class SectionAdmin(admin.ModelAdmin):
     autocomplete_fields = [
         'site',
     ]
+    list_filter = [
+        'site',
+    ]
 
 
 @admin.register(Editorial)
@@ -55,12 +58,15 @@ class EditorialAdmin(admin.ModelAdmin):
     autocomplete_fields = [
         'site',
     ]
+    list_filter = [
+        'site',
+    ]
 
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
     list_display = [
-        'headline', 'editorial', 'site',
+        'site', 'headline', 'editorial', 'section',
     ]
     search_fields = [
         'headline', 'blurb', 'url',
@@ -69,5 +75,8 @@ class NewsAdmin(admin.ModelAdmin):
         'created', 'modified'
     ]
     autocomplete_fields = [
-        'site', 'editorial'
+        'site', 'editorial', 'section'
+    ]
+    list_filter = [
+        'site', 'section',
     ]
