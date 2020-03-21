@@ -63,10 +63,11 @@ class Editorial(TimeStampedModel):
 
 class News(TimeStampedModel):
     headline = models.CharField(_('headline'), max_length=100)
-    blurb = models.CharField(_('blurb'), max_length=100)
+    blurb = models.CharField(_('blurb'), max_length=100, blank=True)
     editorial = models.ForeignKey('Editorial', on_delete=models.CASCADE)
     url = models.URLField(_('url'))
-    section = models.ForeignKey('Section', on_delete=models.CASCADE)
+    section = models.ForeignKey(
+        'Section', on_delete=models.CASCADE, null=True, blank=True)
     site = models.ForeignKey('Site', on_delete=models.CASCADE)
 
     def __str__(self):

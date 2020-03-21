@@ -10,10 +10,11 @@ class NewsForm(forms.ModelForm):
 
     def clean_section(self):
         section = self.cleaned_data['section']
-        count_news = News.objects.filter(section=section).count()
-        if count_news >= section.slots:
-            raise forms.ValidationError(
-                _('Section full, max news count %d.' % section.slots))
+        if section is not None:
+            count_news = News.objects.filter(section=section).count()
+            if count_news >= section.slots:
+                raise forms.ValidationError(
+                    _('Section full, max news count %d.' % section.slots))
         return section
 
     class Meta:
