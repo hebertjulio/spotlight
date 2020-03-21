@@ -10,6 +10,12 @@ class Site(TimeStampedModel):
     slug = models.SlugField(_('slug'), max_length=100, unique=True)
     url = models.URLField(_('url'), unique=True)
 
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
     class Meta:
         verbose_name = 'site'
         verbose_name_plural = 'sites'
@@ -21,6 +27,12 @@ class Section(TimeStampedModel):
     slots = models.PositiveSmallIntegerField(
         _('slots'), validators=[MinValueValidator(1)])
     site = models.ForeignKey('Site', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
 
     class Meta:
         verbose_name = 'section'
@@ -35,6 +47,12 @@ class Editorial(TimeStampedModel):
     slug = models.SlugField(_('slug'), max_length=100)
     site = models.ForeignKey('Site', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
     class Meta:
         verbose_name = 'editorial'
         verbose_name_plural = 'editorials'
@@ -44,12 +62,18 @@ class Editorial(TimeStampedModel):
 
 
 class News(TimeStampedModel):
-    headline = models.CharField(_('title'), max_length=100)
+    headline = models.CharField(_('headline'), max_length=100)
     blurb = models.CharField(_('blurb'), max_length=100)
     editorial = models.ForeignKey('Editorial', on_delete=models.CASCADE)
     url = models.URLField(_('url'))
     section = models.ForeignKey('Section', on_delete=models.CASCADE)
     site = models.ForeignKey('Site', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.headline
+
+    def __repr__(self):
+        return self.headline
 
     class Meta:
         verbose_name = 'news'
