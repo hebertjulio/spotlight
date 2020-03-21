@@ -5,3 +5,4 @@ django-filter==2.2.0
 djangorestframework-api-key==1.4.1
 psycopg2==2.8.4
 dynaconf[toml]==2.2.3
+django-autocomplete-light==3.5.1

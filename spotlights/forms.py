@@ -1,6 +1,8 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from dal import autocomplete
+
 from .models import News
 
 
@@ -16,4 +18,16 @@ class NewsForm(forms.ModelForm):
 
     class Meta:
         model = News
-        fields = '__all__'
+        fields = [
+            'site', 'headline', 'blurb', 'editorial', 'url', 'section',
+        ]
+        widgets = {
+            'editorial': autocomplete.ModelSelect2(
+                url='spotlights:editorial_autocomplete',
+                forward=['site']
+            ),
+            'section': autocomplete.ModelSelect2(
+                url='spotlights:section_autocomplete',
+                forward=['site']
+            ),
+        }
