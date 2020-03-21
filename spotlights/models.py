@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -17,7 +18,8 @@ class Site(TimeStampedModel):
 class Section(TimeStampedModel):
     name = models.CharField(_('name'), max_length=100)
     slug = models.SlugField(_('slug'), max_length=100, unique=True)
-    slots = models.PositiveSmallIntegerField(_('slots'), default=0)
+    slots = models.PositiveSmallIntegerField(
+        _('slots'), validators=[MinValueValidator(1)])
     site = models.ForeignKey('Site', on_delete=models.CASCADE)
 
     class Meta:
