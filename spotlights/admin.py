@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
+
 
 from .models import Site, Section, Editorial, News
 from .forms import NewsForm
@@ -68,6 +70,7 @@ class EditorialAdmin(admin.ModelAdmin):
 class NewsAdmin(admin.ModelAdmin):
 
     form = NewsForm
+    empty_value_display = _('None')
 
     list_display = [
         'site', 'headline', 'editorial', 'section',
