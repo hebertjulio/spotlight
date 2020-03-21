@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import Site, Section, Editorial, News
+from .forms import NewsForm
 
 
 @admin.register(Site)
@@ -65,6 +66,9 @@ class EditorialAdmin(admin.ModelAdmin):
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
+
+    form = NewsForm
+
     list_display = [
         'site', 'headline', 'editorial', 'section',
     ]
