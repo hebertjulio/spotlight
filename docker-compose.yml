@@ -1,0 +1,40 @@
+version: '2.1'
+
+services:
+
+  db:
+    image: postgres:11.4
+    volumes:
+      - spotlight-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=spotlight
+      - POSTGRES_PASSWORD=spotlight
+      - POSTGRES_DB=spotlight
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spotlight"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - net
+
+  app:
+    image: python:3.7.3
+    working_dir: /usr/app
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/usr/app:z
+    networks:
+      - net
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ./dev-boost
+
+networks:
+  net:
+    driver: bridge
+
+volumes:
+  spotlight-db:

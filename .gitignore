@@ -1,0 +1,11 @@
+.vscode/
+
+media/
+static/
+
+__pycache__/
+__mypy__/
+
+*.py[cod]
+*.sqlite3
+*.db
