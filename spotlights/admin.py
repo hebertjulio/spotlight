@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 
-from .models import Site, Section, Layout, Editorial, News
+from .models import Site, Section, Layout, Editorial, News, RelatedNews
 from .forms import LayoutForm, NewsForm
 
 
@@ -91,6 +91,13 @@ class EditorialAdmin(admin.ModelAdmin):
     ]
 
 
+class RelatedNewsInline(admin.TabularInline):
+
+    model = RelatedNews
+    min_num = 0
+    max_num = 3
+
+
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
 
@@ -112,9 +119,6 @@ class NewsAdmin(admin.ModelAdmin):
     list_filter = [
         'site', 'section',
     ]
-
-    def get_form(self, request, obj=None, **kwargs):
-        if obj and obj.id:
-            self.exclude = ['override']
-        form = super().get_form(request, obj, **kwargs)
-        return form
+    inlines = [
+        RelatedNewsInline,
+    ]

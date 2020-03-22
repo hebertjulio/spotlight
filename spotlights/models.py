@@ -102,3 +102,10 @@ class News(TimeStampedModel):
         unique_together = [
             ['site', 'url']
         ]
+
+
+class RelatedNews(TimeStampedModel):
+
+    headline = models.CharField(_('headline'), max_length=100)
+    url = models.URLField(_('url'))
+    news = models.ForeignKey('News', on_delete=models.CASCADE)
