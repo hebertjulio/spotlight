@@ -128,12 +128,13 @@ class NewsAdmin(admin.ModelAdmin):
         RelatedNewsInline,
     ]
 
+    exclude = ['thumbnail']
+
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
-        if not obj.image:
-            self.exclude = ['thumbnail']
-        else:
+        if obj and obj.thumbnail and obj.thumbnail.url:
             self.readonly_fields = ['thumbnail']
+            self.exclude = [f for f in self.exclude if f != 'thumbnail']
         return form
 
     def get_queryset(self, request):
