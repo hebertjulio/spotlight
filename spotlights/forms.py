@@ -62,8 +62,8 @@ class NewsForm(forms.ModelForm):
     class Meta:
         model = News
         fields = [
-            'site', 'headline', 'blurb', 'editorial', 'url', 'image',
-            'section', 'layout', 'override',
+            'site', 'headline', 'blurb', 'editorial', 'url',
+            'section', 'layout', 'override', 'image'
         ]
         widgets = {
             'editorial': autocomplete.ModelSelect2(

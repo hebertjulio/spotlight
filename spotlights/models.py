@@ -4,6 +4,9 @@ from django.utils.translation import gettext_lazy as _
 
 from model_utils.models import TimeStampedModel
 
+from imagekit.processors import ResizeToFit
+from imagekit.models import ImageSpecField
+
 
 class Site(TimeStampedModel):
     name = models.CharField(_('name'), max_length=100)
@@ -89,6 +92,11 @@ class News(TimeStampedModel):
         'Section', on_delete=models.CASCADE, null=True, blank=True)
     layout = models.ForeignKey(
         'Layout', on_delete=models.CASCADE, null=True, blank=True)
+
+    thumbnail = ImageSpecField(
+        source='image', processors=[ResizeToFit(300, 300)],
+        format='JPEG', options={'quality': 60}
+    )
 
     @property
     def related_news(self):
