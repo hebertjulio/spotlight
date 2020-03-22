@@ -102,6 +102,9 @@ class News(TimeStampedModel):
         unique_together = [
             ['site', 'url']
         ]
+        ordering = [
+            '-created',
+        ]
 
 
 class RelatedNews(TimeStampedModel):
