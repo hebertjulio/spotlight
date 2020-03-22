@@ -32,11 +32,6 @@ class NewsForm(forms.ModelForm):
         label=_('Override'),
     )
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     if self.instance and self.instance.id:
-    #         self.fields['override'].widget = forms.HiddenInput()
-
     def clean_section(self):
         section = self.cleaned_data['section']
         if section and (not self.instance or not self.instance.id):
