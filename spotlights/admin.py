@@ -22,6 +22,9 @@ class SiteAdmin(admin.ModelAdmin):
         'created', 'modified',
     ]
 
+    def get_queryset(self, request):
+        return request.user.sites.all()
+
 
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
@@ -69,6 +72,12 @@ class LayoutAdmin(admin.ModelAdmin):
         'created', 'modified',
     ]
 
+    def get_queryset(self, request):
+        sites = request.user.sites.all()
+        qs = super().get_queryset(request)
+        qs = qs.filter(site__in=sites)
+        return qs
+
 
 @admin.register(Editorial)
 class EditorialAdmin(admin.ModelAdmin):
@@ -90,6 +99,12 @@ class EditorialAdmin(admin.ModelAdmin):
     exclude = [
         'created', 'modified',
     ]
+
+    def get_queryset(self, request):
+        sites = request.user.sites.all()
+        qs = super().get_queryset(request)
+        qs = qs.filter(site__in=sites)
+        return qs
 
 
 class RelatedNewsInline(admin.TabularInline):
@@ -119,7 +134,7 @@ class NewsAdmin(admin.ModelAdmin):
         'headline', 'blurb', 'url',
     ]
     autocomplete_fields = [
-        'site', 'editorial', 'section', 'layout',
+        'site',
     ]
     list_filter = [
         'site', 'section',
@@ -138,7 +153,7 @@ class NewsAdmin(admin.ModelAdmin):
         return form
 
     def get_queryset(self, request):
-        sites = request.user.sites.select_related().all()
+        sites = request.user.sites.all()
         qs = super().get_queryset(request)
         qs = qs.filter(site__in=sites)
         return qs
