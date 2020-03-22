@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import (
     SectionAutocompleteView, LayoutAutocompleteView, EditorialAutocompleteView,
-    NewsAutocompleteView
+    NewsAutocompleteView, NewsListView
 )
 
 
@@ -10,23 +10,28 @@ app_name = 'spotlights'
 
 urlpatterns = [
     path(
-        'editorial-autocomplete/',
+        'editorial-autocomplete',
         EditorialAutocompleteView.as_view(),
         name='editorial_autocomplete',
     ),
     path(
-        'section-autocomplete/',
+        'section-autocomplete',
         SectionAutocompleteView.as_view(),
         name='section_autocomplete',
     ),
     path(
-        'layout-autocomplete/',
+        'layout-autocomplete',
         LayoutAutocompleteView.as_view(),
         name='layout_autocomplete',
     ),
     path(
-        'news-autocomplete/',
+        'news-autocomplete',
         NewsAutocompleteView.as_view(),
         name='news_autocomplete',
+    ),
+    path(
+        '<str:version>/news',
+        NewsListView.as_view(),
+        name='news_list',
     ),
 ]

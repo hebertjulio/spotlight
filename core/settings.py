@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'django_filters',
     'accounts',
     'spotlights',
     'django_cleanup.apps.CleanupConfig',
@@ -135,6 +137,27 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#std:setting-AUTH_USER_MODEL
 
 AUTH_USER_MODEL = 'accounts.User'
+
+
+# Define django-rest-framework configs.
+# https://www.django-rest-framework.org/api-guide/authentication/
+
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_VERSIONING_CLASS':
+        'rest_framework.versioning.URLPathVersioning',
+    'ALLOWED_VERSIONS': ['v1'],
+}
 
 
 # HERE STARTS DYNACONF EXTENSION LOAD (Keep at the very bottom of settings.py)

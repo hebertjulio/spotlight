@@ -1,6 +1,8 @@
 from dal import autocomplete
+from rest_framework.generics import ListAPIView
 
 from .models import Section, Layout, Editorial, News
+from .serializers import NewsSerializer
 
 
 class SectionAutocompleteView(autocomplete.Select2QuerySetView):
@@ -41,3 +43,14 @@ class NewsAutocompleteView(autocomplete.Select2QuerySetView):
         if section_id:
             qs = News.objects.filter(section__id=section_id)
         return qs
+
+
+class NewsListView(ListAPIView):
+
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
+
+    filterset_fields = [
+        'site__slug', 'section__slug',
+        'editorial__slug',
+    ]
