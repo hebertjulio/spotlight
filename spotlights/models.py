@@ -92,7 +92,7 @@ class News(TimeStampedModel):
 
     @property
     def related_news(self):
-        return self.relatednews_set.select_related().all()
+        return self.relatednews_set.all()
 
     def __str__(self):
         return self.headline
