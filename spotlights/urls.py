@@ -30,7 +30,7 @@ urlpatterns = [
         name='news_autocomplete',
     ),
     path(
-        '<str:version>/news',
+        'news',
         NewsListView.as_view(),
         name='news_list',
     ),
