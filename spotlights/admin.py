@@ -54,7 +54,7 @@ class LayoutAdmin(admin.ModelAdmin):
     form = LayoutForm
 
     list_display = [
-        'name', 'slug', 'section',
+        'name', 'slug', 'section', 'site'
     ]
     search_fields = [
         'name', 'slug'
