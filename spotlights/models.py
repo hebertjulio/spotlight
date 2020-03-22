@@ -124,3 +124,7 @@ class RelatedNews(TimeStampedModel):
     headline = models.CharField(_('headline'), max_length=100)
     url = models.URLField(_('url'))
     news = models.ForeignKey('News', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('related news')
+        verbose_name_plural = _('related news')
