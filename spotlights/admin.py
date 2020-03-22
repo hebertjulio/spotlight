@@ -112,3 +112,9 @@ class NewsAdmin(admin.ModelAdmin):
     list_filter = [
         'site', 'section',
     ]
+
+    def get_form(self, request, obj=None, **kwargs):
+        if obj and obj.id:
+            self.exclude = ['override']
+        form = super().get_form(request, obj, **kwargs)
+        return form

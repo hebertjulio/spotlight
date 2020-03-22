@@ -25,11 +25,11 @@ class LayoutForm(forms.ModelForm):
 class NewsForm(forms.ModelForm):
 
     override = forms.ModelChoiceField(
-        label=_('Override'),
         queryset=News.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(
             url='spotlights:news_autocomplete', forward=['section']
         ),
+        label=_('Override'),
     )
 
     def __init__(self, *args, **kwargs):
@@ -39,7 +39,7 @@ class NewsForm(forms.ModelForm):
 
     def clean_section(self):
         section = self.cleaned_data['section']
-        if section:
+        if section and (not self.instance or not self.instance.id):
             qs = News.objects.filter(section=section)
             override = self.data.get('override')
             if override:
@@ -67,8 +67,8 @@ class NewsForm(forms.ModelForm):
     class Meta:
         model = News
         fields = [
-            'site', 'headline', 'blurb', 'editorial', 'url', 'section',
-            'layout', 'override'
+            'site', 'headline', 'blurb', 'editorial', 'url', 'image',
+            'section', 'layout', 'override',
         ]
         widgets = {
             'editorial': autocomplete.ModelSelect2(

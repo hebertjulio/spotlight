@@ -6,3 +6,5 @@ djangorestframework-api-key==1.4.1
 psycopg2==2.8.4
 dynaconf[toml]==2.2.3
 django-autocomplete-light==3.5.1
+pillow==7.0.0
+django-cleanup==4.0.0
