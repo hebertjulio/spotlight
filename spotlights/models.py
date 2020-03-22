@@ -17,8 +17,8 @@ class Site(TimeStampedModel):
         return self.name
 
     class Meta:
-        verbose_name = 'site'
-        verbose_name_plural = 'sites'
+        verbose_name = _('site')
+        verbose_name_plural = _('sites')
 
 
 class Section(TimeStampedModel):
@@ -35,8 +35,8 @@ class Section(TimeStampedModel):
         return self.name
 
     class Meta:
-        verbose_name = 'section'
-        verbose_name_plural = 'sections'
+        verbose_name = _('section')
+        verbose_name_plural = _('sections')
         unique_together = [
             ['site', 'slug']
         ]
@@ -55,8 +55,8 @@ class Layout(TimeStampedModel):
         return self.name
 
     class Meta:
-        verbose_name = 'layout'
-        verbose_name_plural = 'layouts'
+        verbose_name = _('layout')
+        verbose_name_plural = _('layouts')
 
 
 class Editorial(TimeStampedModel):
@@ -71,8 +71,8 @@ class Editorial(TimeStampedModel):
         return self.name
 
     class Meta:
-        verbose_name = 'editorial'
-        verbose_name_plural = 'editorials'
+        verbose_name = _('editorial')
+        verbose_name_plural = _('editorials')
         unique_together = [
             ['site', 'slug']
         ]
@@ -97,8 +97,8 @@ class News(TimeStampedModel):
         return self.headline
 
     class Meta:
-        verbose_name = 'news'
-        verbose_name_plural = 'news'
+        verbose_name = _('news')
+        verbose_name_plural = _('news')
         unique_together = [
             ['site', 'url']
         ]
