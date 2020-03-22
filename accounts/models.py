@@ -42,6 +42,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         ),
     )
 
+    sites = models.ManyToManyField('spotlights.Site', blank=True)
+
     objects = UserManager()
 
     EMAIL_FIELD = 'email'

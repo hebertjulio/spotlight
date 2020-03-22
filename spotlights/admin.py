@@ -114,7 +114,7 @@ class NewsAdmin(admin.ModelAdmin):
         'created', 'modified'
     ]
     autocomplete_fields = [
-        'site', 'editorial', 'section', 'layout'
+        'site', 'editorial', 'section', 'layout',
     ]
     list_filter = [
         'site', 'section',
@@ -122,3 +122,9 @@ class NewsAdmin(admin.ModelAdmin):
     inlines = [
         RelatedNewsInline,
     ]
+
+    def get_queryset(self, request):
+        sites = request.user.sites.select_related().all()
+        qs = super().get_queryset(request)
+        qs = qs.filter(site__in=sites)
+        return qs

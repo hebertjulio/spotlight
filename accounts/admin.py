@@ -14,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
         (_('Permissions'), {
             'fields': (
                 'is_active', 'is_staff', 'is_superuser',
-                'user_permissions',),
+                'user_permissions', 'sites'),
         }),
         (_('Important dates'), {
             'fields': ('last_login', 'created', 'modified',)}),
@@ -28,3 +28,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('name', 'email',),
         }),
     ) + BaseUserAdmin.add_fieldsets
+
+    filter_horizontal = [
+        *BaseUserAdmin.filter_horizontal, *['sites']
+    ]
