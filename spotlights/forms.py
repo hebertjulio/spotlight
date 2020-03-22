@@ -4,7 +4,22 @@ from django.db import transaction
 
 from dal import autocomplete
 
-from .models import News
+from .models import Layout, News
+
+
+class LayoutForm(forms.ModelForm):
+
+    class Meta:
+        model = Layout
+        fields = [
+            'site', 'section', 'name', 'slug',
+        ]
+        widgets = {
+            'section': autocomplete.ModelSelect2(
+                url='spotlights:section_autocomplete',
+                forward=['site']
+            ),
+        }
 
 
 class NewsForm(forms.ModelForm):
@@ -53,7 +68,7 @@ class NewsForm(forms.ModelForm):
         model = News
         fields = [
             'site', 'headline', 'blurb', 'editorial', 'url', 'section',
-            'override'
+            'layout', 'override'
         ]
         widgets = {
             'editorial': autocomplete.ModelSelect2(
@@ -63,5 +78,9 @@ class NewsForm(forms.ModelForm):
             'section': autocomplete.ModelSelect2(
                 url='spotlights:section_autocomplete',
                 forward=['site']
+            ),
+            'layout': autocomplete.ModelSelect2(
+                url='spotlights:layout_autocomplete',
+                forward=['section']
             ),
         }

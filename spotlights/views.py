@@ -1,6 +1,6 @@
 from dal import autocomplete
 
-from .models import Section, Editorial, News
+from .models import Section, Layout, Editorial, News
 
 
 class SectionAutocompleteView(autocomplete.Select2QuerySetView):
@@ -10,6 +10,16 @@ class SectionAutocompleteView(autocomplete.Select2QuerySetView):
         qs = Section.objects.none()
         if site_id:
             qs = Section.objects.filter(site__id=site_id)
+        return qs
+
+
+class LayoutAutocompleteView(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        section_id = self.forwarded.get('section')
+        qs = Layout.objects.none()
+        if section_id:
+            qs = Layout.objects.filter(section__id=section_id)
         return qs
 
 

@@ -2,8 +2,8 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 
-from .models import Site, Section, Editorial, News
-from .forms import NewsForm
+from .models import Site, Section, Layout, Editorial, News
+from .forms import LayoutForm, NewsForm
 
 
 @admin.register(Site)
@@ -41,6 +41,31 @@ class SectionAdmin(admin.ModelAdmin):
     ]
     list_filter = [
         'site',
+    ]
+
+
+@admin.register(Layout)
+class LayoutAdmin(admin.ModelAdmin):
+
+    form = LayoutForm
+
+    list_display = [
+        'name', 'slug', 'section',
+    ]
+    search_fields = [
+        'name', 'slug'
+    ]
+    autocomplete_fields = [
+        'site', 'section',
+    ]
+    prepopulated_fields = {
+        'slug': ['name']
+    }
+    readonly_fields = [
+        'created', 'modified'
+    ]
+    list_filter = [
+        'site', 'section',
     ]
 
 
@@ -82,7 +107,7 @@ class NewsAdmin(admin.ModelAdmin):
         'created', 'modified'
     ]
     autocomplete_fields = [
-        'site', 'editorial', 'section'
+        'site', 'editorial', 'section', 'layout'
     ]
     list_filter = [
         'site', 'section',

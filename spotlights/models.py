@@ -42,6 +42,23 @@ class Section(TimeStampedModel):
         ]
 
 
+class Layout(TimeStampedModel):
+    name = models.CharField(_('name'), max_length=100)
+    slug = models.SlugField(_('slug'), max_length=100, unique=True)
+    site = models.ForeignKey('Site', on_delete=models.CASCADE)
+    section = models.ForeignKey('Section', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'layout'
+        verbose_name_plural = 'layouts'
+
+
 class Editorial(TimeStampedModel):
     name = models.CharField(_('name'), max_length=100)
     slug = models.SlugField(_('slug'), max_length=100)
@@ -66,9 +83,11 @@ class News(TimeStampedModel):
     blurb = models.CharField(_('blurb'), max_length=100, blank=True)
     editorial = models.ForeignKey('Editorial', on_delete=models.CASCADE)
     url = models.URLField(_('url'))
+    site = models.ForeignKey('Site', on_delete=models.CASCADE)
     section = models.ForeignKey(
         'Section', on_delete=models.CASCADE, null=True, blank=True)
-    site = models.ForeignKey('Site', on_delete=models.CASCADE)
+    layout = models.ForeignKey(
+        'Layout', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.headline
