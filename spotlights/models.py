@@ -90,6 +90,10 @@ class News(TimeStampedModel):
     layout = models.ForeignKey(
         'Layout', on_delete=models.CASCADE, null=True, blank=True)
 
+    @property
+    def related_news(self):
+        return self.relatednews_set.select_related().all()
+
     def __str__(self):
         return self.headline
 

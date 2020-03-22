@@ -47,7 +47,7 @@ class NewsAutocompleteView(autocomplete.Select2QuerySetView):
 
 class NewsListView(ListAPIView):
 
-    queryset = News.objects.all()
+    queryset = News.objects.select_related().all()
     serializer_class = NewsSerializer
 
     filterset_fields = [
