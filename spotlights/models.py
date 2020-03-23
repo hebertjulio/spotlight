@@ -125,6 +125,12 @@ class RelatedNews(TimeStampedModel):
     url = models.URLField(_('url'))
     news = models.ForeignKey('News', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.headline
+
+    def __repr__(self):
+        return self.headline
+
     class Meta:
         verbose_name = _('related news')
         verbose_name_plural = _('related news')

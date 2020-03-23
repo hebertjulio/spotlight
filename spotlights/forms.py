@@ -1,6 +1,5 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from django.db import transaction
 
 from dal import autocomplete
 
@@ -9,11 +8,12 @@ from .models import Layout, News
 
 class LayoutForm(forms.ModelForm):
 
+    class Media:
+        js = ('js/custom.js',)
+
     class Meta:
         model = Layout
-        fields = [
-            'site', 'section', 'name', 'slug',
-        ]
+        fields = '__all__'
         widgets = {
             'section': autocomplete.ModelSelect2(
                 url='spotlights:section_autocomplete',
@@ -44,20 +44,8 @@ class NewsForm(forms.ModelForm):
                     _('Section full, max news count %d.' % section.slots))
         return section
 
-    @transaction.atomic
-    def save(self, commit=True):
-        override = self.data.get('override')
-        if override:
-            try:
-                obj = News.objects.get(pk=override)
-                obj.section = None
-                obj.save()
-            except News.DoesNotExist:
-                pass
-        instance = super().save(commit=False)
-        if commit:
-            instance.save()
-        return instance
+    class Media:
+        js = ('js/custom.js',)
 
     class Meta:
         model = News

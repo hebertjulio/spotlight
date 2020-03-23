@@ -3,7 +3,7 @@ from rest_framework.generics import ListAPIView
 
 from .models import Section, Layout, Editorial, News
 from .serializers import NewsSerializer
-from .filters import NewsFilterSet
+from .filters_sets import NewsFilterSet
 
 
 class SectionAutocompleteView(autocomplete.Select2QuerySetView):

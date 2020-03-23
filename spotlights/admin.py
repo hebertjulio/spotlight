@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
+from django.db import transaction
 
 from imagekit.admin import AdminThumbnail
 
@@ -9,6 +10,7 @@ from .forms import LayoutForm, NewsForm
 
 @admin.register(Site)
 class SiteAdmin(admin.ModelAdmin):
+
     list_display = [
         'name', 'slug', 'url',
     ]
@@ -21,6 +23,12 @@ class SiteAdmin(admin.ModelAdmin):
     exclude = [
         'created', 'modified',
     ]
+
+    @transaction.atomic()
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        if not change:
+            request.user.sites.add(obj)
 
     def get_queryset(self, request):
         return request.user.sites.all()
@@ -143,7 +151,19 @@ class NewsAdmin(admin.ModelAdmin):
         RelatedNewsInline,
     ]
 
-    exclude = ['thumbnail']
+    exclude = ['image_thumbnail']
+
+    @transaction.atomic()
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        override = request.POST.get('override')
+        if override:
+            try:
+                obj = News.objects.get(pk=override)
+                obj.section = None
+                obj.save()
+            except News.DoesNotExist:
+                pass
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
