@@ -7,7 +7,7 @@
                 $('#id_editorial').empty();
                 $('#id_section').empty();
                 $('#id_layout').empty();
-                $('#id_override').empty();
+                $('#id_supersede').empty();
             }
             selected_site = me.children('option:selected').val();
         });
@@ -17,7 +17,7 @@
             let me = $(this);
             if (selected_section != undefined) {
                 $('#id_layout').empty();
-                $('#id_override').empty();
+                $('#id_supersede').empty();
             }
             selected_section = me.children('option:selected').val();
         });
