@@ -139,7 +139,8 @@ class NewsAdmin(admin.ModelAdmin):
         'site', 'headline', 'panel',
     ]
     search_fields = [
-        'headline', 'blurb', 'url',
+        'headline', 'blurb', 'url', 'editorials__name',
+        'editorials__slug',
     ]
     autocomplete_fields = [
         'site',
