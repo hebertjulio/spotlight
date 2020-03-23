@@ -150,8 +150,9 @@ class NewsAdmin(admin.ModelAdmin):
     inlines = [
         RelatedNewsInline,
     ]
-
-    exclude = ['image_thumbnail']
+    readonly_fields = [
+        'thumbnail'
+    ]
 
     @transaction.atomic()
     def save_model(self, request, obj, form, change):
@@ -168,9 +169,7 @@ class NewsAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
-        if obj and obj.thumbnail and obj.thumbnail.url:
-            self.readonly_fields = ['thumbnail']
-            self.exclude = [f for f in self.exclude if f != 'thumbnail']
+        form.request = request
         return form
 
     def get_queryset(self, request):

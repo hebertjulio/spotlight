@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
@@ -36,8 +38,13 @@ class NewsForm(forms.ModelForm):
         supersede = self.data.get('supersede')
         section = self.cleaned_data['section']
         if section and not supersede:
-            count = News.objects.filter(section=section).count()
-            if count >= section.slots:
+            qs = News.objects.filter(section=section)
+            http_refer = self.request.META['HTTP_REFERER']
+            regex = r'news\/(\d)\/change'
+            matches = re.search(regex, http_refer, re.DOTALL)
+            if matches:
+                qs = qs.exclude(id=matches.group(1))
+            if qs.count() >= section.slots:
                 raise forms.ValidationError(
                     _('Section full, max news count %d.' % section.slots))
         return section
@@ -49,7 +56,7 @@ class NewsForm(forms.ModelForm):
         model = News
         fields = [
             'site', 'headline', 'blurb', 'editorial', 'url',
-            'section', 'layout', 'supersede', 'image'
+            'section', 'layout', 'supersede', 'image',
         ]
         widgets = {
             'editorial': autocomplete.ModelSelect2(
