@@ -21,6 +21,8 @@ services:
   app:
     image: python:3.7.3
     working_dir: /usr/app
+    stdin_open: true
+    tty: true
     ports:
       - "8000:8000"
     volumes:
