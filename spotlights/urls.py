@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import (
-    SectionAutocompleteView, LayoutAutocompleteView, EditorialAutocompleteView,
+    PanelAutocompleteView, LayoutAutocompleteView, EditorialAutocompleteView,
     SupersedeAutocompleteView, NewsListView
 )
 
@@ -15,9 +15,9 @@ urlpatterns = [
         name='editorial_autocomplete',
     ),
     path(
-        'section/autocomplete/',
-        SectionAutocompleteView.as_view(),
-        name='section_autocomplete',
+        'panel/autocomplete/',
+        PanelAutocompleteView.as_view(),
+        name='panel_autocomplete',
     ),
     path(
         'layout/autocomplete/',

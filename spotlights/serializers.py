@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Site, Section, Editorial, News, RelatedNews
+from .models import Site, Panel, Editorial, News, RelatedNews
 
 
 class SiteSerializer(serializers.ModelSerializer):
@@ -12,10 +12,10 @@ class SiteSerializer(serializers.ModelSerializer):
         ]
 
 
-class SectionSerializer(serializers.ModelSerializer):
+class PanelSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Section
+        model = Panel
         exclude = [
             'id', 'site', 'created', 'modified'
         ]
@@ -43,7 +43,7 @@ class NewsSerializer(serializers.ModelSerializer):
 
     site = SiteSerializer()
     editorials = EditorialSerializer(many=True)
-    section = SectionSerializer()
+    panel = PanelSerializer()
     related_news = RelatedNewsSerializer(many=True)
 
     class Meta:

@@ -4,7 +4,7 @@ from django.db import transaction
 
 from imagekit.admin import AdminThumbnail
 
-from .models import Site, Section, Layout, Editorial, News, RelatedNews
+from .models import Site, Panel, Layout, Editorial, News, RelatedNews
 from .forms import LayoutForm, NewsForm
 
 
@@ -34,8 +34,8 @@ class SiteAdmin(admin.ModelAdmin):
         return request.user.sites.all()
 
 
-@admin.register(Section)
-class SectionAdmin(admin.ModelAdmin):
+@admin.register(Panel)
+class PanelAdmin(admin.ModelAdmin):
     list_display = [
         'name', 'slug', 'slots', 'site',
     ]
@@ -62,19 +62,19 @@ class LayoutAdmin(admin.ModelAdmin):
     form = LayoutForm
 
     list_display = [
-        'name', 'slug', 'section', 'site'
+        'name', 'slug', 'panel', 'site'
     ]
     search_fields = [
         'name', 'slug'
     ]
     autocomplete_fields = [
-        'site', 'section',
+        'site', 'panel',
     ]
     prepopulated_fields = {
         'slug': ['name']
     }
     list_filter = [
-        'site', 'section',
+        'site', 'panel',
     ]
     exclude = [
         'created', 'modified',
@@ -136,7 +136,7 @@ class NewsAdmin(admin.ModelAdmin):
     thumbnail.short_description = _('thumbnail')
 
     list_display = [
-        'site', 'headline', 'section',
+        'site', 'headline', 'panel',
     ]
     search_fields = [
         'headline', 'blurb', 'url',
@@ -145,7 +145,7 @@ class NewsAdmin(admin.ModelAdmin):
         'site',
     ]
     list_filter = [
-        'site', 'section',
+        'site', 'panel',
     ]
     inlines = [
         RelatedNewsInline,
@@ -161,7 +161,7 @@ class NewsAdmin(admin.ModelAdmin):
         if supersede:
             try:
                 supersede = News.objects.get(pk=supersede)
-                supersede.section = None
+                supersede.panel = None
                 supersede.save()
             except News.DoesNotExist:
                 obj.supersede = None

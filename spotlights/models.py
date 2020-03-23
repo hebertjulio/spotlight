@@ -24,7 +24,7 @@ class Site(TimeStampedModel):
         verbose_name_plural = _('sites')
 
 
-class Section(TimeStampedModel):
+class Panel(TimeStampedModel):
     name = models.CharField(_('name'), max_length=100)
     slug = models.SlugField(_('slug'), max_length=100, unique=True)
     slots = models.PositiveSmallIntegerField(
@@ -38,8 +38,8 @@ class Section(TimeStampedModel):
         return self.name
 
     class Meta:
-        verbose_name = _('section')
-        verbose_name_plural = _('sections')
+        verbose_name = _('panel')
+        verbose_name_plural = _('panels')
         unique_together = [
             ['site', 'slug']
         ]
@@ -49,7 +49,7 @@ class Layout(TimeStampedModel):
     name = models.CharField(_('name'), max_length=100)
     slug = models.SlugField(_('slug'), max_length=100, unique=True)
     site = models.ForeignKey('Site', on_delete=models.CASCADE)
-    section = models.ForeignKey('Section', on_delete=models.CASCADE)
+    panel = models.ForeignKey('Panel', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -88,8 +88,8 @@ class News(TimeStampedModel):
     url = models.URLField(_('url'))
     image = models.ImageField(_('image'), upload_to='news', blank=True)
     site = models.ForeignKey('Site', on_delete=models.CASCADE)
-    section = models.ForeignKey(
-        'Section', on_delete=models.SET_NULL, null=True, blank=True)
+    panel = models.ForeignKey(
+        'Panel', on_delete=models.SET_NULL, null=True, blank=True)
     layout = models.ForeignKey(
         'Layout', on_delete=models.SET_NULL, null=True, blank=True)
 

@@ -4,11 +4,11 @@ from .models import News
 
 
 class NewsFilterSet(FilterSet):
-    section__isnull = NumberFilter(field_name='section', lookup_expr='isnull')
+    panel__isnull = NumberFilter(field_name='panel', lookup_expr='isnull')
 
     class Meta:
         model = News
         fields = [
-            'section__slug', 'section__isnull',
+            'panel__slug', 'panel__isnull',
             'site__slug', 'editorials__slug',
         ]
