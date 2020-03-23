@@ -1,11 +1,10 @@
-import re
-
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from dal import autocomplete
 
 from .models import Layout, News
+from .services import get_current_news_id
 
 
 class LayoutForm(forms.ModelForm):
@@ -39,11 +38,9 @@ class NewsForm(forms.ModelForm):
         section = self.cleaned_data['section']
         if section and not supersede:
             qs = News.objects.filter(section=section)
-            http_refer = self.request.META['HTTP_REFERER']
-            regex = r'news\/(\d)\/change'
-            matches = re.search(regex, http_refer, re.DOTALL)
-            if matches:
-                qs = qs.exclude(id=matches.group(1))
+            current_news_id = get_current_news_id(self.request)
+            if current_news_id:
+                qs = qs.exclude(id=current_news_id)
             if qs.count() >= section.slots:
                 raise forms.ValidationError(
                     _('Section full, max news count %d.' % section.slots))

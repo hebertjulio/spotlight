@@ -1,11 +1,10 @@
-import re
-
 from dal import autocomplete
 from rest_framework.generics import ListAPIView
 
 from .models import Section, Layout, Editorial, News
 from .serializers import NewsSerializer
 from .filters_sets import NewsFilterSet
+from .services import get_current_news_id
 
 
 class SectionAutocompleteView(autocomplete.Select2QuerySetView):
@@ -45,11 +44,9 @@ class SupersedeAutocompleteView(autocomplete.Select2QuerySetView):
         section_id = self.forwarded.get('section')
         if section_id:
             qs = News.objects.filter(section__id=section_id)
-        http_refer = self.request.META['HTTP_REFERER']
-        regex = r'news\/(\d)\/change'
-        matches = re.search(regex, http_refer, re.DOTALL)
-        if matches:
-            qs = qs.exclude(id=matches.group(1))
+        current_news_id = get_current_news_id(self.request)
+        if current_news_id:
+            qs = qs.exclude(id=current_news_id)
         return qs
 
 
