@@ -42,7 +42,7 @@ class RelatedNewsSerializer(serializers.ModelSerializer):
 class NewsSerializer(serializers.ModelSerializer):
 
     site = SiteSerializer()
-    editorial = EditorialSerializer()
+    editorials = EditorialSerializer(many=True)
     section = SectionSerializer()
     related_news = RelatedNewsSerializer(many=True)
 

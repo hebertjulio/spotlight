@@ -136,7 +136,7 @@ class NewsAdmin(admin.ModelAdmin):
     thumbnail.short_description = _('thumbnail')
 
     list_display = [
-        'site', 'headline', 'editorial', 'section',
+        'site', 'headline', 'section',
     ]
     search_fields = [
         'headline', 'blurb', 'url',

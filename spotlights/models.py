@@ -84,7 +84,7 @@ class Editorial(TimeStampedModel):
 class News(TimeStampedModel):
     headline = models.CharField(_('headline'), max_length=100)
     blurb = models.CharField(_('blurb'), max_length=100, blank=True)
-    editorial = models.ForeignKey('Editorial', on_delete=models.CASCADE)
+    editorials = models.ManyToManyField('Editorial')
     url = models.URLField(_('url'))
     image = models.ImageField(_('image'), upload_to='news', blank=True)
     site = models.ForeignKey('Site', on_delete=models.CASCADE)

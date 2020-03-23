@@ -52,11 +52,11 @@ class NewsForm(forms.ModelForm):
     class Meta:
         model = News
         fields = [
-            'site', 'headline', 'blurb', 'editorial', 'url',
+            'site', 'headline', 'blurb', 'editorials', 'url',
             'section', 'layout', 'supersede', 'image',
         ]
         widgets = {
-            'editorial': autocomplete.ModelSelect2(
+            'editorials': autocomplete.ModelSelect2Multiple(
                 url='spotlights:editorial_autocomplete',
                 forward=['site']
             ),
