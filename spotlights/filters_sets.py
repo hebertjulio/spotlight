@@ -10,5 +10,5 @@ class NewsFilterSet(FilterSet):
         model = News
         fields = [
             'panel__slug', 'panel__isnull',
-            'site__slug', 'editorials__slug',
+            'site__slug', 'tags__slug',
         ]

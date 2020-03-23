@@ -4,8 +4,8 @@ from django.db import transaction
 
 from imagekit.admin import AdminThumbnail
 
-from .models import Site, Panel, Layout, Page, Editorial, News, RelatedNews
-from .forms import PageForm, LayoutForm, NewsForm
+from .models import Site, Panel, Layout, Tag, News, RelatedNews
+from .forms import LayoutForm, NewsForm
 
 
 @admin.register(Site)
@@ -87,40 +87,8 @@ class LayoutAdmin(admin.ModelAdmin):
         return qs
 
 
-@admin.register(Page)
-class PageAdmin(admin.ModelAdmin):
-
-    form = PageForm
-
-    list_display = [
-        'name', 'slug', 'site'
-    ]
-    search_fields = [
-        'name', 'slug', 'editorials__name',
-        'editorials__slug'
-    ]
-    autocomplete_fields = [
-        'site',
-    ]
-    prepopulated_fields = {
-        'slug': ['name']
-    }
-    list_filter = [
-        'site',
-    ]
-    exclude = [
-        'created', 'modified',
-    ]
-
-    def get_queryset(self, request):
-        sites = request.user.sites.all()
-        qs = super().get_queryset(request)
-        qs = qs.filter(site__in=sites)
-        return qs
-
-
-@admin.register(Editorial)
-class EditorialAdmin(admin.ModelAdmin):
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
     list_display = [
         'name', 'slug', 'site',
     ]
@@ -168,11 +136,11 @@ class NewsAdmin(admin.ModelAdmin):
     thumbnail.short_description = _('thumbnail')
 
     list_display = [
-        'site', 'headline', 'page', 'panel', 'layout'
+        'headline', 'site', 'panel', 'layout'
     ]
     search_fields = [
-        'headline', 'blurb', 'url', 'editorials__name',
-        'editorials__slug',
+        'headline', 'blurb', 'url', 'tags__name',
+        'tags__slug',
     ]
     autocomplete_fields = [
         'site',

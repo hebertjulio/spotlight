@@ -1,8 +1,7 @@
 from django.urls import path
 
 from .views import (
-    PanelAutocompleteView, PageAutocompleteView,
-    LayoutAutocompleteView, EditorialAutocompleteView,
+    PanelAutocompleteView, LayoutAutocompleteView, TagAutocompleteView,
     SupersedeAutocompleteView, NewsListView
 )
 
@@ -11,27 +10,22 @@ app_name = 'spotlights'
 
 urlpatterns = [
     path(
-        'page/autocomplete/',
-        PageAutocompleteView.as_view(),
-        name='page_autocomplete',
+        'tag-autocomplete/',
+        TagAutocompleteView.as_view(),
+        name='tag_autocomplete',
     ),
     path(
-        'editorial/autocomplete/',
-        EditorialAutocompleteView.as_view(),
-        name='editorial_autocomplete',
-    ),
-    path(
-        'panel/autocomplete/',
+        'panel-autocomplete/',
         PanelAutocompleteView.as_view(),
         name='panel_autocomplete',
     ),
     path(
-        'layout/autocomplete/',
+        'layout-autocomplete/',
         LayoutAutocompleteView.as_view(),
         name='layout_autocomplete',
     ),
     path(
-        'supersede/autocomplete/',
+        'supersede-autocomplete/',
         SupersedeAutocompleteView.as_view(),
         name='supersede_autocomplete',
     ),

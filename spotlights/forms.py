@@ -3,24 +3,8 @@ from django.utils.translation import gettext_lazy as _
 
 from dal import autocomplete
 
-from .models import Page, Layout, News
+from .models import Layout, News
 from .services import get_current_news_id
-
-
-class PageForm(forms.ModelForm):
-
-    class Media:
-        js = ('js/custom.js',)
-
-    class Meta:
-        model = Page
-        fields = '__all__'
-        widgets = {
-            'editorials': autocomplete.ModelSelect2Multiple(
-                url='spotlights:editorial_autocomplete',
-                forward=['site']
-            ),
-        }
 
 
 class LayoutForm(forms.ModelForm):
@@ -68,17 +52,13 @@ class NewsForm(forms.ModelForm):
     class Meta:
         model = News
         fields = [
-            'headline', 'blurb', 'site', 'page', 'editorials',
-            'panel', 'layout', 'supersede', 'url', 'image',
+            'headline', 'blurb', 'site', 'tags', 'panel',
+            'layout', 'supersede', 'url', 'image',
         ]
         widgets = {
-            'page': autocomplete.ModelSelect2(
-                url='spotlights:page_autocomplete',
+            'tags': autocomplete.ModelSelect2Multiple(
+                url='spotlights:tag_autocomplete',
                 forward=['site']
-            ),
-            'editorials': autocomplete.ModelSelect2Multiple(
-                url='spotlights:editorial_autocomplete',
-                forward=['page']
             ),
             'panel': autocomplete.ModelSelect2(
                 url='spotlights:panel_autocomplete',

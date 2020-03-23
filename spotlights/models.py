@@ -62,27 +62,7 @@ class Layout(TimeStampedModel):
         verbose_name_plural = _('layouts')
 
 
-class Page(TimeStampedModel):
-    name = models.CharField(_('name'), max_length=100)
-    slug = models.SlugField(_('slug'), max_length=100)
-    site = models.ForeignKey('Site', on_delete=models.CASCADE)
-    editorials = models.ManyToManyField('Editorial')
-
-    def __str__(self):
-        return self.name
-
-    def __repr__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = _('page')
-        verbose_name_plural = _('pages')
-        unique_together = [
-            ['site', 'slug']
-        ]
-
-
-class Editorial(TimeStampedModel):
+class Tag(TimeStampedModel):
     name = models.CharField(_('name'), max_length=100)
     slug = models.SlugField(_('slug'), max_length=100)
     site = models.ForeignKey('Site', on_delete=models.CASCADE)
@@ -94,8 +74,8 @@ class Editorial(TimeStampedModel):
         return self.name
 
     class Meta:
-        verbose_name = _('editorial')
-        verbose_name_plural = _('editorials')
+        verbose_name = _('tag')
+        verbose_name_plural = _('tags')
         unique_together = [
             ['site', 'slug']
         ]
@@ -107,8 +87,7 @@ class News(TimeStampedModel):
     url = models.URLField(_('url'))
     image = models.ImageField(_('image'), upload_to='news', blank=True)
     site = models.ForeignKey('Site', on_delete=models.CASCADE)
-    page = models.ForeignKey('Page', on_delete=models.CASCADE)
-    editorials = models.ManyToManyField('Editorial')
+    tags = models.ManyToManyField('Tag')
     panel = models.ForeignKey(
         'Panel', on_delete=models.SET_NULL, null=True, blank=True)
     layout = models.ForeignKey(

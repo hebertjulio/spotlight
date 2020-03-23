@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Site, Panel, Editorial, News, RelatedNews
+from .models import Site, Panel, Layout, Tag, News, RelatedNews
 
 
 class SiteSerializer(serializers.ModelSerializer):
@@ -21,10 +21,19 @@ class PanelSerializer(serializers.ModelSerializer):
         ]
 
 
-class EditorialSerializer(serializers.ModelSerializer):
+class LayoutSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Editorial
+        model = Layout
+        exclude = [
+            'id', 'site', 'created', 'modified'
+        ]
+
+
+class TagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tag
         exclude = [
             'id', 'site', 'created', 'modified'
         ]
@@ -42,8 +51,9 @@ class RelatedNewsSerializer(serializers.ModelSerializer):
 class NewsSerializer(serializers.ModelSerializer):
 
     site = SiteSerializer()
-    editorials = EditorialSerializer(many=True)
+    tags = TagSerializer(many=True)
     panel = PanelSerializer()
+    layout = LayoutSerializer()
     related_news = RelatedNewsSerializer(many=True)
 
     class Meta:
