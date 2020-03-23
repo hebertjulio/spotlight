@@ -89,9 +89,9 @@ class News(TimeStampedModel):
     image = models.ImageField(_('image'), upload_to='news', blank=True)
     site = models.ForeignKey('Site', on_delete=models.CASCADE)
     section = models.ForeignKey(
-        'Section', on_delete=models.CASCADE, null=True, blank=True)
+        'Section', on_delete=models.SET_NULL, null=True, blank=True)
     layout = models.ForeignKey(
-        'Layout', on_delete=models.CASCADE, null=True, blank=True)
+        'Layout', on_delete=models.SET_NULL, null=True, blank=True)
 
     thumbnail = ImageSpecField(
         source='image', processors=[ResizeToFit(300, 300)],

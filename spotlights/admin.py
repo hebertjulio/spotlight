@@ -156,14 +156,15 @@ class NewsAdmin(admin.ModelAdmin):
     @transaction.atomic()
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        override = request.POST.get('override')
-        if override:
+        supersede = request.POST.get('supersede')
+        if supersede:
             try:
-                obj = News.objects.get(pk=override)
-                obj.section = None
-                obj.save()
+                supersede = News.objects.get(pk=supersede)
+                supersede.section = None
+                supersede.save()
             except News.DoesNotExist:
-                pass
+                obj.supersede = None
+                obj.save()
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)

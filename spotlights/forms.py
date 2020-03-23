@@ -24,22 +24,20 @@ class LayoutForm(forms.ModelForm):
 
 class NewsForm(forms.ModelForm):
 
-    override = forms.ModelChoiceField(
+    supersede = forms.ModelChoiceField(
         queryset=News.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(
-            url='spotlights:news_autocomplete', forward=['section']
+            url='spotlights:supersede_autocomplete', forward=['section', 'id']
         ),
-        label=_('Override'),
+        label=_('Supersede'),
     )
 
     def clean_section(self):
+        supersede = self.data.get('supersede')
         section = self.cleaned_data['section']
-        if section and (not self.instance or not self.instance.id):
-            qs = News.objects.filter(section=section)
-            override = self.data.get('override')
-            if override:
-                qs = qs.exclude(id=override)
-            if qs.count() >= section.slots:
+        if section and not supersede:
+            count = News.objects.filter(section=section).count()
+            if count >= section.slots:
                 raise forms.ValidationError(
                     _('Section full, max news count %d.' % section.slots))
         return section
@@ -51,7 +49,7 @@ class NewsForm(forms.ModelForm):
         model = News
         fields = [
             'site', 'headline', 'blurb', 'editorial', 'url',
-            'section', 'layout', 'override', 'image'
+            'section', 'layout', 'supersede', 'image'
         ]
         widgets = {
             'editorial': autocomplete.ModelSelect2(
