@@ -4,8 +4,8 @@ from django.db import transaction
 
 from imagekit.admin import AdminThumbnail
 
-from .models import Site, Panel, Layout, Editorial, News, RelatedNews
-from .forms import LayoutForm, NewsForm
+from .models import Site, Panel, Layout, Page, Editorial, News, RelatedNews
+from .forms import PageForm, LayoutForm, NewsForm
 
 
 @admin.register(Site)
@@ -68,13 +68,45 @@ class LayoutAdmin(admin.ModelAdmin):
         'name', 'slug'
     ]
     autocomplete_fields = [
-        'site', 'panel',
+        'site',
     ]
     prepopulated_fields = {
         'slug': ['name']
     }
     list_filter = [
         'site', 'panel',
+    ]
+    exclude = [
+        'created', 'modified',
+    ]
+
+    def get_queryset(self, request):
+        sites = request.user.sites.all()
+        qs = super().get_queryset(request)
+        qs = qs.filter(site__in=sites)
+        return qs
+
+
+@admin.register(Page)
+class PageAdmin(admin.ModelAdmin):
+
+    form = PageForm
+
+    list_display = [
+        'name', 'slug', 'site'
+    ]
+    search_fields = [
+        'name', 'slug', 'editorials__name',
+        'editorials__slug'
+    ]
+    autocomplete_fields = [
+        'site',
+    ]
+    prepopulated_fields = {
+        'slug': ['name']
+    }
+    list_filter = [
+        'site',
     ]
     exclude = [
         'created', 'modified',
@@ -136,7 +168,7 @@ class NewsAdmin(admin.ModelAdmin):
     thumbnail.short_description = _('thumbnail')
 
     list_display = [
-        'site', 'headline', 'panel',
+        'site', 'headline', 'page', 'panel', 'layout'
     ]
     search_fields = [
         'headline', 'blurb', 'url', 'editorials__name',

@@ -1,10 +1,20 @@
 from dal import autocomplete
 from rest_framework.generics import ListAPIView
 
-from .models import Panel, Layout, Editorial, News
+from .models import Panel, Page, Layout, Editorial, News
 from .serializers import NewsSerializer
 from .filters_sets import NewsFilterSet
 from .services import get_current_news_id
+
+
+class PageAutocompleteView(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = Page.objects.none()
+        site_id = self.forwarded.get('site')
+        if site_id:
+            qs = Page.objects.filter(site__id=site_id)
+        return qs
 
 
 class PanelAutocompleteView(autocomplete.Select2QuerySetView):
@@ -31,9 +41,9 @@ class EditorialAutocompleteView(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
         qs = Editorial.objects.none()
-        site_id = self.forwarded.get('site')
-        if site_id:
-            qs = Editorial.objects.filter(site__id=site_id)
+        page_id = self.forwarded.get('page')
+        if page_id:
+            qs = Editorial.objects.filter(page__id=page_id)
         return qs
 
 

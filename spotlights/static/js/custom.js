@@ -4,12 +4,22 @@
         $('#id_site').change(function() {
             let me = $(this);
             if (selected_site != undefined) {
+                $('#id_page').empty();
                 $('#id_editorials').empty();
                 $('#id_panel').empty();
                 $('#id_layout').empty();
                 $('#id_supersede').empty();
             }
             selected_site = me.children('option:selected').val();
+        });
+
+        let selected_page;
+        $('#id_page').change(function() {
+            let me = $(this);
+            if (selected_page != undefined) {
+                $('#id_editorials').empty();
+            }
+            selected_page = me.children('option:selected').val();
         });
 
         let selected_panel;
