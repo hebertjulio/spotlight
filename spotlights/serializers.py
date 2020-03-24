@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from .models import Site, Panel, Layout, Tag, News, RelatedNews
+from .models import (
+    Site, Page, Panel, Layout, Editorial, News, NewsPage, RelatedNews)
 
 
 class SiteSerializer(serializers.ModelSerializer):
@@ -12,12 +13,21 @@ class SiteSerializer(serializers.ModelSerializer):
         ]
 
 
+class PageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Page
+        exclude = [
+            'id', 'site', 'created', 'modified'
+        ]
+
+
 class PanelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Panel
         exclude = [
-            'id', 'site', 'created', 'modified'
+            'id', 'site', 'page', 'created', 'modified'
         ]
 
 
@@ -26,14 +36,15 @@ class LayoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Layout
         exclude = [
-            'id', 'site', 'created', 'modified'
+            'id', 'site', 'page', 'panel', 'created',
+            'modified'
         ]
 
 
-class TagSerializer(serializers.ModelSerializer):
+class EditorialSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Tag
+        model = Editorial
         exclude = [
             'id', 'site', 'created', 'modified'
         ]
@@ -48,13 +59,25 @@ class RelatedNewsSerializer(serializers.ModelSerializer):
         ]
 
 
+class NewsPageSerializer(serializers.ModelSerializer):
+
+    page = PageSerializer()
+    panel = PanelSerializer()
+    layout = LayoutSerializer()
+
+    class Meta:
+        model = NewsPage
+        exclude = [
+            'id', 'news', 'created', 'modified'
+        ]
+
+
 class NewsSerializer(serializers.ModelSerializer):
 
     site = SiteSerializer()
-    tags = TagSerializer(many=True)
-    panel = PanelSerializer()
-    layout = LayoutSerializer()
+    editorials = EditorialSerializer(many=True)
     related_news = RelatedNewsSerializer(many=True)
+    news_pages = NewsPageSerializer(many=True)
 
     class Meta:
         model = News

@@ -4,22 +4,10 @@
         $('#id_site').change(function() {
             let me = $(this);
             if (selected_site != undefined) {
-                $('#id_tags').empty();
-                $('#id_panel').empty();
-                $('#id_layout').empty();
-                $('#id_supersede').empty();
+                $('#id_editorials').empty();
+                $('#newspage_set-group').find('select').empty();
             }
             selected_site = me.children('option:selected').val();
-        });
-
-        let selected_panel;
-        $('#id_panel').change(function() {
-            let me = $(this);
-            if (selected_panel != undefined) {
-                $('#id_layout').empty();
-                $('#id_supersede').empty();
-            }
-            selected_panel = me.children('option:selected').val();
         });
 
         let image_field = $('.form-row.field-image>div>p>a');

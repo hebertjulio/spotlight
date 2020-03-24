@@ -1,11 +1,14 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
+from django.forms.models import BaseInlineFormSet
 
 from imagekit.admin import AdminThumbnail
 
-from .models import Site, Panel, Layout, Tag, News, RelatedNews
-from .forms import LayoutForm, NewsForm
+from .models import (
+    Site, Page, Panel, Layout, Editorial, News, RelatedNews, NewsPage
+)
+from .forms import PanelForm, LayoutForm, NewsForm, NewsPageForm
 
 
 @admin.register(Site)
@@ -34,10 +37,41 @@ class SiteAdmin(admin.ModelAdmin):
         return request.user.sites.all()
 
 
+@admin.register(Page)
+class PageAdmin(admin.ModelAdmin):
+    list_display = [
+        'name', 'slug', 'site',
+    ]
+    search_fields = [
+        'name', 'slug'
+    ]
+    prepopulated_fields = {
+        'slug': ['name']
+    }
+    autocomplete_fields = [
+        'site',
+    ]
+    list_filter = [
+        'site',
+    ]
+    exclude = [
+        'created', 'modified',
+    ]
+
+    def get_queryset(self, request):
+        sites = request.user.sites.all()
+        qs = super().get_queryset(request)
+        qs = qs.filter(site__in=sites)
+        return qs
+
+
 @admin.register(Panel)
 class PanelAdmin(admin.ModelAdmin):
+
+    form = PanelForm
+
     list_display = [
-        'name', 'slug', 'slots', 'site',
+        'name', 'slug', 'slots', 'site', 'page',
     ]
     search_fields = [
         'name', 'slug'
@@ -62,7 +96,7 @@ class LayoutAdmin(admin.ModelAdmin):
     form = LayoutForm
 
     list_display = [
-        'name', 'slug', 'panel', 'site'
+        'name', 'slug', 'site', 'page', 'panel',
     ]
     search_fields = [
         'name', 'slug'
@@ -74,7 +108,7 @@ class LayoutAdmin(admin.ModelAdmin):
         'slug': ['name']
     }
     list_filter = [
-        'site', 'panel',
+        'site', 'page',
     ]
     exclude = [
         'created', 'modified',
@@ -87,8 +121,8 @@ class LayoutAdmin(admin.ModelAdmin):
         return qs
 
 
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
+@admin.register(Editorial)
+class EditorialAdmin(admin.ModelAdmin):
     list_display = [
         'name', 'slug', 'site',
     ]
@@ -120,10 +154,30 @@ class RelatedNewsInline(admin.TabularInline):
     model = RelatedNews
     min_num = 0
     max_num = 3
+    extra = 0
 
-    exclude = [
-        'created', 'modified', 'site',
-    ]
+
+class NewsPageFormset(BaseInlineFormSet):
+
+    def _construct_form(self, i, **kwargs):
+        form = super()._construct_form(i, **kwargs)
+        form.request = self.request
+        return form
+
+
+class NewsPageInline(admin.TabularInline):
+
+    form = NewsPageForm
+    model = NewsPage
+    formset = NewsPageFormset
+    min_num = 1
+    max_num = 3
+    extra = 0
+
+    def get_formset(self, request, obj=None, **kwargs):
+        formset = super().get_formset(request, obj, **kwargs)
+        formset.request = request
+        return formset
 
 
 @admin.register(News)
@@ -136,42 +190,28 @@ class NewsAdmin(admin.ModelAdmin):
     thumbnail.short_description = _('thumbnail')
 
     list_display = [
-        'headline', 'site', 'panel', 'layout'
+        'headline', 'site',
     ]
     search_fields = [
-        'headline', 'blurb', 'url', 'tags__name',
-        'tags__slug',
+        'headline', 'blurb', 'url', 'editorials__name',
+        'editorials__slug',
     ]
     autocomplete_fields = [
         'site',
     ]
     list_filter = [
-        'site', 'panel',
+        'site',
     ]
     inlines = [
         RelatedNewsInline,
+        NewsPageInline
     ]
     readonly_fields = [
         'thumbnail'
     ]
-
-    @transaction.atomic()
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
-        supersede = request.POST.get('supersede')
-        if supersede:
-            try:
-                supersede = News.objects.get(pk=supersede)
-                supersede.panel = None
-                supersede.save()
-            except News.DoesNotExist:
-                obj.supersede = None
-                obj.save()
-
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
-        form.request = request
-        return form
+    exclude = [
+        'created', 'modified',
+    ]
 
     def get_queryset(self, request):
         sites = request.user.sites.all()
