@@ -154,7 +154,7 @@ class RelatedNewsInline(admin.TabularInline):
     model = RelatedNews
     min_num = 0
     max_num = 3
-    extra = 0
+    extra = 1
 
 
 class NewsPageFormset(BaseInlineFormSet):
