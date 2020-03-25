@@ -8,7 +8,6 @@ from .services import get_current_news
 
 
 class PageAutocompleteView(autocomplete.Select2QuerySetView):
-
     def get_queryset(self):
         qs = Page.objects.none()
         site_id = self.forwarded.get('site')
@@ -18,7 +17,6 @@ class PageAutocompleteView(autocomplete.Select2QuerySetView):
 
 
 class PanelAutocompleteView(autocomplete.Select2QuerySetView):
-
     def get_queryset(self):
         qs = Panel.objects.none()
         page_id = self.forwarded.get('page')
@@ -28,7 +26,6 @@ class PanelAutocompleteView(autocomplete.Select2QuerySetView):
 
 
 class LayoutAutocompleteView(autocomplete.Select2QuerySetView):
-
     def get_queryset(self):
         qs = Layout.objects.none()
         panel_id = self.forwarded.get('panel')
@@ -38,7 +35,6 @@ class LayoutAutocompleteView(autocomplete.Select2QuerySetView):
 
 
 class EditorialAutocompleteView(autocomplete.Select2QuerySetView):
-
     def get_queryset(self):
         qs = Editorial.objects.none()
         site_id = self.forwarded.get('site')
@@ -48,7 +44,6 @@ class EditorialAutocompleteView(autocomplete.Select2QuerySetView):
 
 
 class SupersedeAutocompleteView(autocomplete.Select2QuerySetView):
-
     def get_queryset(self):
         qs = News.objects.none()
         panel_id = self.forwarded.get('panel')
@@ -61,7 +56,6 @@ class SupersedeAutocompleteView(autocomplete.Select2QuerySetView):
 
 
 class NewsListView(ListAPIView):
-
-    queryset = News.objects.all()
+    queryset = News.objects.select_related().all()
     serializer_class = NewsSerializer
     filterset_class = NewsFilterSet

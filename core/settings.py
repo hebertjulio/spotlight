@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'spotlights',
     'django_cleanup.apps.CleanupConfig',
     'imagekit',
+    'silk',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -156,6 +158,18 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.LimitOffsetPagination',
 }
+
+
+# https://docs.djangoproject.com/en/3.0/ref/settings/
+
+LOGIN_URL = '/admin/'
+
+# https://silk.readthedocs.io/en/latest/
+
+SILKY_AUTHENTICATION = True  # User must login
+SILKY_AUTHORISATION = True  # User must have permissions
+SILKY_INTERCEPT_FUNC = (
+    lambda request: all([i not in request.path for i in ['admin']]))
 
 
 # HERE STARTS DYNACONF EXTENSION LOAD (Keep at the very bottom of settings.py)

@@ -124,7 +124,7 @@ class News(TimeStampedModel):
 
     @property
     def news_pages(self):
-        return self.newspage_set.all()
+        return self.newspage_set.select_related().all()
 
     def __str__(self):
         return self.headline

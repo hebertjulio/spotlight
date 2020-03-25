@@ -20,7 +20,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('spotlights/', include('spotlights.urls')),
+    path('spotlights/', include('spotlights.urls', namespace='spotlights')),
+    path('silk/', include('silk.urls', namespace='silk'))
 ]
 
 if settings.DEBUG:
