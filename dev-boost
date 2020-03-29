@@ -1,6 +1,8 @@
 #!/bin/sh
 
-pip install -r requirements.txt
+pip install poetry
 
-python -u manage.py migrate
-python -u manage.py runserver [::]:8000
+poetry install
+
+poetry run python -u manage.py migrate
+poetry run python -u manage.py runserver [::]:8000

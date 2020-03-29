@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "spotlight"
+version = "0.1.0"
+description = "News spotligths admin."
+authors = ["Hebert <hebertjulio@users.noreply.github.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+django = "^2.0.0"
+djangorestframework = "^3.11.0"
+django-model-utils = "^4.0.0"
+django-filter = "^2.2.0"
+djangorestframework-api-key = "^1.4.1"
+psycopg2 = "^2.8.4"
+dynaconf = {version = "^2.2.3", extras = ["toml"]}
+django-autocomplete-light = "^3.5.1"
+pillow = "^7.0.0"
+django-cleanup = "^4.0.0"
+django-imagekit = "^4.0.2"
+django-silk = "^4.0.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
