@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_api_key',
     'django_filters',
     'accounts',
     'spotlights',
@@ -146,6 +147,9 @@ AUTH_USER_MODEL = 'accounts.User'
 # https://www.django-rest-framework.org/api-guide/authentication/
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework_api_key.permissions.HasAPIKey',
+    ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
     ],
